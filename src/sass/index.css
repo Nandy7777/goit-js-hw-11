@@ -54,4 +54,14 @@
 
 .load-more.is-hidden {
   display: none;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-item {
+  text-align: center;
 }/*# sourceMappingURL=index.css.map */

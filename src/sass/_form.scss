@@ -6,7 +6,6 @@
     background-color: blue;
 }
 
-
 .gallery{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -25,6 +24,16 @@
     margin-left: auto;
     margin-right: auto;
 }
+
 .load-more.is-hidden{
     display: none;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.info-item {
+  text-align: center;
 }

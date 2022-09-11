@@ -10,21 +10,20 @@ const galleryContainer = document.querySelector('.gallery');
 const loadMoreBtn = new LoadMoreBtn({
     selector: '.load-more',
     hidden: true,
-
 });
 
 const photoApiService = new PhotoApiService();
-console.log(photoApiService);
+// console.log(photoApiService);
 
-console.log(loadMoreBtn)
+// console.log(loadMoreBtn)
 serchForm.addEventListener(`submit`, onSerch);
 loadMoreBtn.refs.button.addEventListener(`click`, fetchArticles);
 
-function onSerch(e) {
+async function onSerch(e) {
     e.preventDefault();
-    photoApiService.query = e.currentTarget.elements.query.value;
+    photoApiService.query = e.currentTarget.elements.query.value.trim();
     if (photoApiService.query === '') {
-        return alert()
+        return Notiflix.Notify.failure(`Please type something`);
     }
     loadMoreBtn.show();
     photoApiService.resetPage();
