@@ -1,35 +1,39 @@
-import axios from 'axios';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+const axios = require('axios');
 
 export default class PhotoApiService {
   constructor() {
     this.searchQuery = ``;
     this.page = 1;
+    this.totalPages = null;
   }
+
   async fetchArticles() {
     const response = await axios.get(
       `https://pixabay.com/api/?key=29802518-7a19817c952422887bb4d93d8&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`
     );
-    this.incrementPage();
-    return response.data;
+    const data = await response.data;
+    const photos = await this.getArrayOfPhotos(data);
+    return photos;
   }
 
-  // fetchArticles() {
-  //     const URL = `https://pixabay.com/api/?key=29802518-7a19817c952422887bb4d93d8&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=4&page=${this.page}`;
-
-  // return fetch(URL)
-  //   .then(response => response.json())
-  //     .then( ({hits}) => {
-  //         this.incrementPage();
-  //         return hits;
-  //   });
-  // }
-
-  incrementPage() {
+  getArrayOfPhotos(r) {
+    this.totalPages = Math.ceil(r.totalHits / 40);
+    if (r.totalHits === 0) {
+      return Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+    }
+    if (this.page === 1) {
+      Notify.success(`Hooray! We found ${r.totalHits} images.`);
+    }
     this.page += 1;
+    return r.hits;
   }
 
   resetPage() {
     this.page = 1;
+    this.totalPages = null;
   }
 
   get query() {

@@ -4,47 +4,59 @@ import photoCard from './partials/photocard.hbs';
 import LoadMoreBtn from './load-more-btn';
 
 const serchForm = document.querySelector('#search-form');
-// const loadMoreBtn = document.querySelector('.load-more');
 const galleryContainer = document.querySelector('.gallery');
 
 const loadMoreBtn = new LoadMoreBtn({
-    selector: '.load-more',
-    hidden: true,
+  selector: '.load-more',
+  hidden: true,
 });
 
 const photoApiService = new PhotoApiService();
-// console.log(photoApiService);
 
-// console.log(loadMoreBtn)
 serchForm.addEventListener(`submit`, onSerch);
 loadMoreBtn.refs.button.addEventListener(`click`, fetchArticles);
 
-async function onSerch(e) {
+function onSerch(e) {
     e.preventDefault();
-    photoApiService.query = e.currentTarget.elements.query.value.trim();
-    if (photoApiService.query === '') {
-        return Notiflix.Notify.failure(`Please type something`);
-    }
     loadMoreBtn.show();
+    photoApiService.query = e.currentTarget.elements.searchQuery.value.trim();
     photoApiService.resetPage();
     clearGalleryContainer();
-    fetchArticles();
-};
-
+    if (photoApiService.query === '') {
+      loadMoreBtn.hide();
+      return typeSomething();
+      }
+  serchForm.reset();
+  fetchArticles();
+}
+     
 function fetchArticles() {
-    loadMoreBtn.disable();
-    photoApiService.fetchArticles().then(hits => {
-        appendMarkup(hits);
-        loadMoreBtn.enable();
-    });   
+  loadMoreBtn.disable();
+  photoApiService
+    .fetchArticles()
+    .then(hits => {
+      appendMarkup(hits);
+      loadMoreBtn.enable();
+    })
+    .catch(e => {
+      Notify.failure('Oops, error!!!');
+    });
 }
 
 function appendMarkup(hits) {
-    galleryContainer.insertAdjacentHTML('beforeend', photoCard(hits)); 
+  galleryContainer.insertAdjacentHTML('beforeend', photoCard(hits));
 }
 
 function clearGalleryContainer() {
-    galleryContainer.innerHTML = ``;
+  galleryContainer.innerHTML = ``;
 }
 
-  
+function typeSomething() {
+     Notiflix.Notify.info(`Please type something`);
+}
+
+function noMorePicture() {
+    Notiflix.Notify.info(
+      "We're sorry, but you've reached the end of search results."
+    );
+}
