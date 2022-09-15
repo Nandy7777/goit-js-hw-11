@@ -25,9 +25,9 @@ function onSerch(e) {
     if (photoApiService.query === '') {
       loadMoreBtn.hide();
       return typeSomething();
-      }
-  serchForm.reset();
-  fetchArticles();
+    }
+    serchForm.reset();
+    fetchArticles();
 }
      
 function fetchArticles() {
@@ -39,8 +39,9 @@ function fetchArticles() {
       loadMoreBtn.enable();
     })
     .catch(e => {
-      Notify.failure('Oops, error!!!');
-    });
+      Notiflix.Notify.failure('Oops, error!!!');
+      loadMoreBtn.hide();
+    })
 }
 
 function appendMarkup(hits) {
@@ -53,10 +54,4 @@ function clearGalleryContainer() {
 
 function typeSomething() {
      Notiflix.Notify.info(`Please type something`);
-}
-
-function noMorePicture() {
-    Notiflix.Notify.info(
-      "We're sorry, but you've reached the end of search results."
-    );
 }
