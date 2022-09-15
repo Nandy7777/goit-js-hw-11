@@ -16,7 +16,7 @@ export default class PhotoApiService {
 
   async fetchArticles() {
     const response = await axios.get(
-      `https://pixabay.com/api/?key=29802518-7a19817c952422887bb4d93d8&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=4&page=${this.page}`
+      `https://pixabay.com/api/?key=29802518-7a19817c952422887bb4d93d8&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`
     );
     const data = await response.data;
     const photos = await this.getArrayOfPhotos(data);
