@@ -34,11 +34,11 @@ export default class PhotoApiService {
     if (this.page === 1) {
       Notify.success(`Hooray! We found ${r.totalHits} images.`);
     }
-    if (r.totalHits > r.hits) {
-      Notify.info("We're sorry, but you've reached the end of search results.");
-      loadMoreBtn.hide();
-      return
-    }
+    // if (r.totalHits > r.hits) {
+    //   Notify.info("We're sorry, but you've reached the end of search results.");
+    //   loadMoreBtn.hide();
+    //   return
+    // }
     this.page += 1;
     return r.hits;
   }

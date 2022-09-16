@@ -31,12 +31,25 @@ function onSerch(e) {
 }
      
 function fetchArticles() {
+  loadMoreBtn.hide();
   loadMoreBtn.disable();
   photoApiService
     .fetchArticles()
     .then(hits => {
       appendMarkup(hits);
       loadMoreBtn.enable();
+      loadMoreBtn.show();
+      if (photoApiService.totalPages <=1) {
+        loadMoreBtn.hide();
+        return;
+      }
+      if (photoApiService.page > photoApiService.totalPages) {
+      Notiflix.Notify.info(
+        "We're sorry, but you've reached the end of search results."
+      );
+      loadMoreBtn.hide();
+      return
+    }
     })
     .catch(e => {
       Notiflix.Notify.failure('Oops, error!!!');
